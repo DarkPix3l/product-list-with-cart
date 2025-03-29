@@ -1,17 +1,14 @@
 const container = document.getElementById("container");
 let product = document.getElementById("product");
 const add2cart = document.getElementsByClassName("add2Cart");
+const cart = document.getElementById("cart");
 
 fetch("./script/data.json")
   .then((response) => response.json())
   .then((data) => {
 
-    console.log(data);
-    console.log(data.image);
-
-data.forEach(element => {
-    container.innerHTML += 
-                        `<div class="product">
+    data.forEach((element) => {
+      container.innerHTML += `<div class="product">
                             <div class="actionContainer">
                                 <img src="${element.image["desktop"]}">
                                 
@@ -19,6 +16,7 @@ data.forEach(element => {
                                     <img src="./assets/images/icon-add-to-cart.svg" alt="" srcset="">
                                     <p>Add to Cart</p>
                                 </a>
+
                                 <div class="quantityBTN">
                                     <a href="#"><div class="minusIcon"></div></a>
                                     <p>1</p>
@@ -28,16 +26,36 @@ data.forEach(element => {
                             <div class="description">
                                 <p class = "category">${element.category}</p>
                                 <p class = "name">${element.name}</p>
-                                <p class = "price">$ ${element.price}</p>
+                                <p class = "price">$ ${element.price.toFixed(2)}</p>
                             </div>
                         </div>`;
-});
-
-  }) 
+    });
+  })
   .catch((error) => {
     console.error("Error:", error);
   });
 
-add2cart.addEventListener("click", function(){  //NOT WORKING. probably because it's running when the products are not still created?
-     alert("Hello World!"); 
+async function fetchText() {
+  let response = await fetch("./script/data.json");
+  let data = await response.json();
+  let add2CartArray = Array.from(add2cart);
+  
+  
+  
+  add2CartArray.forEach((button, index) => {
+    button.addEventListener("click", function () {
+      
+      cart.innerHTML = `
+      <div class="addedProduct">
+        <div class="text">
+          <p>${data[index].name}</p>
+          <p><span>xQ</span><span>@ ${data[index].price.toFixed(2)} </span><span>${data[index].price.toFixed(2)}</span></p>
+        </div>
+        <div class="removeItem"></div>
+      </div>
+      `
+      console.log(`${data[index].price}`);
     });
+  });
+}
+fetchText();
