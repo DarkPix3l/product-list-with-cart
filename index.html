@@ -18,7 +18,7 @@
 
 </head>
 
-<body>
+<body">
 
   <div class="wrapper">
     <main>
@@ -30,10 +30,16 @@
       <aside>
         <div id="cart">
           <h2> Your Cart (<span>0</span>)</h2>
-          <img src="./assets/images/illustration-empty-cart.svg" alt="" srcset="">
-          <p> Your added items will appear here</p>
-        </div>
 
+          <div class="empty-cart" style="margin-bottom: 30px;">
+            <img src="./assets/images/illustration-empty-cart.svg" alt="" srcset="">
+            <p> Your added items will appear here</p>
+          </div>
+
+          <div id="cart-items" class="cart-items">
+          </div>
+
+        </div>
       </aside>
     </main>
   </div>
@@ -42,7 +48,7 @@
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. 
     Coded by <a href="#">Your Name Here</a>.
   </div> -->
-  <script src="./script/script.js"></script>
+  <script src="./script/script.js" type="module"></script>
 </body>
 
 </html>

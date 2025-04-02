@@ -80,8 +80,7 @@ main {
   /* display: grid;
     grid-template-columns: 3fr 1fr; */
   display: flex;
-  flex-direction: row;
-  gap: 40px;
+  gap: 20px;
 }
 
 #grow {
@@ -89,6 +88,11 @@ main {
   flex-basis: min-content;
 }
 
+aside {
+  min-height: 100vh;
+  /* flex-grow: 1; */
+  /* padding: 20px; */
+}
 
 .wrapper {
   width: 82%;
@@ -101,10 +105,10 @@ main {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   justify-items: center;
-  gap: 25px;
+  gap: 20px;
 }
 
-.product {
+.product-list-item {
   width: 100%;
   height: 100%;
 }
@@ -138,10 +142,6 @@ main {
   font-weight: 600;
 }
 
-.add2Cart{
-  display: block;
-}
-
 /* add2Cart button */
 .add2Cart,
 .quantityBTN {
@@ -151,17 +151,21 @@ main {
   align-items: center;
   justify-content: space-around;
   position: absolute;
-  bottom: calc(0px - 20px); /* the bottom minus half of its height */
+  bottom: calc(0px - 20px);
+  /* the bottom minus half of its height */
   padding: 10px;
   text-wrap: nowrap;
   background-color: white;
   border-radius: 50px;
   justify-self: anchor-center;
   border: 1px solid grey;
+  cursor: pointer;
 }
+
 .add2Cart img {
   width: 30px;
 }
+
 .add2Cart p {
   margin-left: 5px;
 }
@@ -171,7 +175,7 @@ main {
 .quantityBTN {
   background-color: var(--Red);
   color: white;
- /*  display: block; */
+  display: none;
 }
 
 .minusIcon,
@@ -197,10 +201,10 @@ main {
 
 #cart {
   padding: 20px;
-  min-width: 260px;
   border-radius: 5px;
   background-color: white;
 }
+
 #cart img {
   display: block;
   margin: auto;
@@ -209,31 +213,50 @@ main {
 #cart h2 {
   color: var(--Red);
 }
+
 /* #cart p {
   text-align: center;
 } */
 
-.addedProduct{
+.added-product {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.text p:first-child{
+.text p:first-child {
   font-weight: 600;
 }
 
 
-.removeItem{
+.removeItem {
   width: 21px;
   height: 21px;
   border: 1px solid grey;
-  background-image: url('/assets/images/icon-remove-item.svg');
+  background-image: url('./assets/images/icon-remove-item.svg');
   background-repeat: no-repeat;
   background-size: contain;
   border-radius: 20px;
 }
 
+.remove-item-btn {
+  cursor: pointer;
+  color: rgb(100, 100, 100);
+  border: 1px solid rgb(100, 100, 100);
+  border-radius: 50%;
+  padding-bottom: 3px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
 /* 
 .attribution {
@@ -243,7 +266,6 @@ main {
 .attribution a {
   color: hsl(228, 45%, 44%);
 } */
-
 
 @media only screen and (max-width: 1024px) {
 
