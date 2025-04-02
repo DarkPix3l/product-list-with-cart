@@ -80,7 +80,8 @@ main {
   /* display: grid;
     grid-template-columns: 3fr 1fr; */
   display: flex;
-  gap: 20px;
+  flex-direction: row;
+  gap: 40px;
 }
 
 #grow {
@@ -88,11 +89,6 @@ main {
   flex-basis: min-content;
 }
 
-aside {
-  min-height: 100vh;
-  /* flex-grow: 1; */
-  /* padding: 20px; */
-}
 
 .wrapper {
   width: 82%;
@@ -105,7 +101,7 @@ aside {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   justify-items: center;
-  gap: 20px;
+  gap: 25px;
 }
 
 .product {
@@ -142,6 +138,10 @@ aside {
   font-weight: 600;
 }
 
+.add2Cart{
+  display: block;
+}
+
 /* add2Cart button */
 .add2Cart,
 .quantityBTN {
@@ -171,7 +171,7 @@ aside {
 .quantityBTN {
   background-color: var(--Red);
   color: white;
-  display: none;
+ /*  display: block; */
 }
 
 .minusIcon,
@@ -243,3 +243,38 @@ aside {
 .attribution a {
   color: hsl(228, 45%, 44%);
 } */
+
+
+@media only screen and (max-width: 1024px) {
+
+  #container {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+}
+
+
+@media only screen and (max-width: 768px) {
+  main{
+    flex-direction: column;
+
+  }
+
+  #container {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+}
+
+
+@media only screen and (max-width: 425px) {
+  main{
+    flex-direction: column;
+
+  }
+
+  #container {
+    grid-template-columns: 1fr;
+  }
+  
+}
