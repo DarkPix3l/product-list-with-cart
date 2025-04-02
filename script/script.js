@@ -44,7 +44,7 @@ async function fetchText() {
   
   add2CartArray.forEach((button, index) => {
     button.addEventListener("click", function () {
-      
+      add2cart.style.display = "none";
       cart.innerHTML = `
       <div class="addedProduct">
         <div class="text">
