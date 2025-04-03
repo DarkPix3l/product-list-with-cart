@@ -1,24 +1,26 @@
 const container = document.getElementById("container");
-const product = document.getElementById("product");
-const cart = document.getElementById("cart");
 const cartItemsHtmlContent = document.getElementById("cart-items");
 const add2cart = document.getElementsByClassName("add2Cart");
+
+const addedCartItems = []; //Storing cart products
+const cartQuantities = {}; // Storing product quantities
 
 fetch("./script/data.json")
   .then((response) => response.json())
   .then((data) => {
+    // adding products dynamically
     data.forEach((dessert) => {
       container.innerHTML += `
         <div class="product-list-item" id="${dessert.id}">
           <div class="actionContainer">
-              <img src="${dessert.image["desktop"]}">
+              <img src="${dessert.image.desktop}">
               
               <div class="add2Cart">
-                  <img src="./assets/images/icon-add-to-cart.svg" alt="icon-add-to-cart" srcset="">
+                  <img src="./assets/images/icon-add-to-cart.svg" alt="icon-add-to-cart">
                   <p>Add to Cart</p>
               </div>
 
-              <div class="quantityBTN">
+              <div class="quantityBTN" style="display: none;">
                   <div class="minusIcon"></div>
                   <p>1</p>
                   <div class="plusIcon"></div>
@@ -26,67 +28,79 @@ fetch("./script/data.json")
           </div>
           
           <div class="description">
-              <p class = "category">${dessert.category}</p>
-              <p class = "name">${dessert.name}</p>
-              <p class = "price">$ ${dessert.price.toFixed(2)}</p>
+              <p class="category">${dessert.category}</p>
+              <p class="name">${dessert.name}</p>
+              <p class="price">$${dessert.price.toFixed(2)}</p>
           </div>
       </div>
-    `;
+      `;
+    });
+
+    // Attach event listeners after products are loaded
+    Array.from(add2cart).forEach((button, index) => {
+      button.addEventListener("click", () => {
+        addItemToCart(data[index]);
+        showBtnStyle(data[index].id);
+      });
+    });
+
+    //INCREMENT BUTTON
+    document.querySelectorAll(".plusIcon").forEach((button, index) => {
+      button.addEventListener("click", () => addItemToCart(data[index]));
+    });
+
+    //DECREMENT BUTTON
+    document.querySelectorAll(".minusIcon").forEach((button, index) => {
+      button.addEventListener("click", () => removeItemToCart(data[index]));
     });
   })
-  .catch((error) => {
-    console.error("Error:", error);
-  });
+  .catch((error) => console.error("Error:", error));
 
-const addedCartItems = [];
-const cartItemsResume = [];
 
-let response = await fetch("./script/data.json");
-let data = await response.json();
-let add2CartArray = Array.from(add2cart);
+///---------------------------------------------
 
-function resolveBtnStyle(id) {
-  const cartItemBtn = document.querySelector(
-    `#${id}.product-list-item .actionContainer .quantityBTN`
-  );
-  cartItemBtn.style.display = "flex";
+
+
+// Show quantity btn
+function showBtnStyle(id) {
+  document.querySelector(`#${id} .quantityBTN`).style.display = "flex";
 }
 
+// hide quantity btn
+function hideBtnStyle(id) {
+  document.querySelector(`#${id} .quantityBTN`).style.display = "none";
+}
+
+// Function to add item to cart
 function addItemToCart(dessert) {
-  const items = addedCartItems.filter(
-    (cartItem) => cartItem.name == dessert.name
+  if (cartQuantities[dessert.id]) {
+    cartQuantities[dessert.id]++;
+  } else {
+    cartQuantities[dessert.id] = 1;
+    addedCartItems.push(dessert);
+  }
+
+  const quantity = cartQuantities[dessert.id];
+
+  document.querySelector(`#${dessert.id} .quantityBTN p`).innerHTML = quantity;
+  const cartItem = document.querySelector(
+    `#cart-items #${dessert.id} .quantity`
   );
-  addedCartItems.push(dessert);
 
-  resolveBtnStyle(dessert.id);
-
-  if (items.length) {
-    const itemsQuantity = items.length + 1;
-    const totalPrice = items[0].price * itemsQuantity;
-
-    const addedProductQuantity = document.querySelector(
-      `#${dessert.id} .added-product .quantity`
-    );
-    addedProductQuantity.innerHTML = itemsQuantity + "x";
-
-    const addedProductTotalPrice = document.querySelector(
-      `#${dessert.id} .added-product .total-price`
-    );
-    addedProductTotalPrice.innerHTML = totalPrice.toFixed(2);
+  if (cartItem) {
+    cartItem.innerHTML = `${quantity}x`;
   } else {
     cartItemsHtmlContent.innerHTML += `
       <div id="${dessert.id}">
         <div class="added-product">
           <div class="text">
-            <p style="color: rgb(10, 10, 10); margin-bottom: 8px;">
-              ${dessert.name}
-            </p>
+            <p>${dessert.name}</p>
             <p>
-              <span class="quantity" style="margin-right: 12px;">1x</span>
-              <span class="unique-price" style="margin-right: 12px; color: grey;">
-              @ $${dessert.price.toFixed(2)}
-              </span>
-              $<span class="total-price">${dessert.price.toFixed(2)}</span>
+              <span class="quantity">${quantity}x</span>
+              <span class="unique-price">@ $${dessert.price.toFixed(2)}</span>
+              $<span class="total-price">${(dessert.price * quantity).toFixed(
+                2
+              )}</span>
             </p>
           </div>
           <div class="remove-item-btn">x</div>
@@ -96,9 +110,37 @@ function addItemToCart(dessert) {
   }
 }
 
-add2CartArray.forEach((button, index) => {
-  button.addEventListener("click", function () {
-    const dessert = data[index];
-    addItemToCart(dessert);
+function removeItemToCart(dessert) {
+  if (!cartQuantities[dessert.id]) return;
+
+  cartQuantities[dessert.id]--;
+  const quantity = cartQuantities[dessert.id];
+
+  if (quantity === 0) {
+    delete cartQuantities[dessert.id];
+    document.querySelector(`#cart-items #${dessert.id}`).remove();
+    hideBtnStyle(dessert.id);
+  } else {
+    document.querySelector(`#${dessert.id} .quantityBTN p`).innerHTML =
+      quantity;
+    document.querySelector(
+      `#cart-items #${dessert.id} .quantity`
+    ).innerHTML = `${quantity}x`;
+  }
+}
+
+//DELETE BUTTON   -- NOT WORKING
+function deleteBTN(dessert) {
+  const prova = document.querySelectorAll(
+    `#cart-items #${dessert.id} .added-product .remove-item-btn`
+  );
+
+  prova.forEach((button, index) => {
+    button.addEventListener("click", function () {
+      const dessert = data[index];
+      delete cartQuantities[dessert.id];
+      document.querySelector(`#cart-items #${dessert.id}`).remove();
+      hideBtnStyle(dessert.id);
+    });
   });
-});
+}
