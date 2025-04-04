@@ -1,9 +1,7 @@
-/* Global Variables */
 :root {
   /* color palette */
   --Red: hsl(14, 86%, 42%);
   --Green: hsl(159, 69%, 38%);
-
   --Rose-50: hsl(20, 50%, 98%);
   --Rose-100: hsl(13, 31%, 94%);
   --Rose-300: hsl(14, 25%, 72%);
@@ -26,7 +24,6 @@
 }
 
 html {
-  /* Font size (product names): 16px */
   /* Weights: 400, 600, 700 */
   font-size: 16px;
   font-family: "Red Hat Text", sans-serif;
@@ -43,11 +40,6 @@ body {
 a {
   text-decoration: none;
 }
-
-/* ul,
-ol {
-  list-style-type: none;
-} */
 
 h1 {
   margin-bottom: 30px;
@@ -66,8 +58,8 @@ button {
   margin: 20px 0;
 }
 
-button:hover{
-  background-color:hsl(14, 88%, 33%);
+button:hover {
+  background-color: hsl(14, 88%, 33%);
 }
 
 /* ----------------- */
@@ -75,21 +67,16 @@ button:hover{
 main {
   min-height: 100vh;
   display: flex;
-  gap: 20px;
-}
-
-#grow {
-  flex-grow: 3;
-  flex-basis: min-content;
+  gap: 30px;
 }
 
 aside {
   min-height: 100vh;
-  flex-grow: 1;
+  min-width: 390px;
 }
 
 .wrapper {
-  width: 82%;
+  width: 87%;
   margin: 50px auto;
 }
 
@@ -143,17 +130,22 @@ aside {
   height: 40px;
   width: 75%;
   align-items: center;
-  justify-content: space-around;
   position: absolute;
-  bottom: calc(0px - 20px);
   /* the bottom minus half of its height */
+  bottom: calc(0px - 20px);
+  left: calc(50% - 37.5%);
   padding: 22px;
-  text-wrap: nowrap;
-  background-color: white;
+  white-space: nowrap;
   border-radius: 50px;
-  justify-self: anchor-center;
+  /* justify-self: anchor-center; Working but not supported in firefox and not valid still*/
+  /* more info https://developer.chrome.com/docs/css-ui/anchor-positioning-api */
   border: 1px solid rgb(170, 170, 170);
   cursor: pointer;
+}
+
+.add2Cart {
+  background-color: white;
+  justify-content: center;
 }
 
 .add2Cart:hover {
@@ -173,6 +165,7 @@ aside {
 /* quantity button */
 
 .quantityBTN {
+  justify-content: space-around;
   background-color: var(--Red);
   color: white;
   display: none;
@@ -217,7 +210,6 @@ aside {
   padding: 30px;
   border-radius: 10px;
   background-color: white;
-  min-width: 200px;
 }
 
 #empty-cart img {
@@ -285,11 +277,13 @@ aside {
 }
 
 /* helper class */
-.display-none {display: none;}
+.display-none {
+  display: none;
+}
 
-#confirm-order{display: none;} /* for now */
-
-#order-total p {margin: 30px 0;}
+#order-total p {
+  margin: 30px 0;
+}
 
 #order-total p span {
   float: inline-end;
@@ -306,9 +300,13 @@ aside {
   border-radius: 10px;
 }
 
-#emission-info img { margin-right: 10px; }
+#emission-info img {
+  margin-right: 10px;
+}
 
-#emission-info b {color: var(--Rose-500);}
+#emission-info b {
+  color: var(--Rose-500);
+}
 
 /* 
 .attribution {
@@ -318,6 +316,12 @@ aside {
 .attribution a {
   color: hsl(228, 45%, 44%);
 } */
+
+@media only screen and (max-width: 1440px) {
+  #container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
 
 @media only screen and (max-width: 1024px) {
   #container {
@@ -338,6 +342,10 @@ aside {
 @media only screen and (max-width: 425px) {
   main {
     flex-direction: column;
+  }
+
+  aside {
+    min-width: unset;
   }
 
   #container {
