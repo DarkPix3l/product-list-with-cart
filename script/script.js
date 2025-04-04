@@ -1,6 +1,7 @@
 const container = document.getElementById("container");
 const cartItemsHtmlContent = document.getElementById("cart-items");
 const add2cart = document.getElementsByClassName("add2Cart");
+const emptyCart = document.getElementById("empty-cart");
 
 const addedCartItems = []; //Storing cart products
 const cartQuantities = {}; // Storing product quantities
@@ -21,9 +22,9 @@ fetch("./script/data.json")
               </div>
 
               <div class="quantityBTN" style="display: none;">
-                  <div class="minusIcon"></div>
+                  <div class="minusIcon"><span>-</span></div>
                   <p>1</p>
-                  <div class="plusIcon"></div>
+                  <div class="plusIcon"><span>+</span></div>
               </div>
           </div>
           
@@ -56,10 +57,7 @@ fetch("./script/data.json")
   })
   .catch((error) => console.error("Error:", error));
 
-
 ///---------------------------------------------
-
-
 
 // Show quantity btn
 function showBtnStyle(id) {
@@ -71,7 +69,7 @@ function hideBtnStyle(id) {
   document.querySelector(`#${id} .quantityBTN`).style.display = "none";
 }
 
-// Function to add item to cart
+// Function add item to cart
 function addItemToCart(dessert) {
   if (cartQuantities[dessert.id]) {
     cartQuantities[dessert.id]++;
@@ -79,16 +77,18 @@ function addItemToCart(dessert) {
     cartQuantities[dessert.id] = 1;
     addedCartItems.push(dessert);
   }
-
   const quantity = cartQuantities[dessert.id];
 
   document.querySelector(`#${dessert.id} .quantityBTN p`).innerHTML = quantity;
-  const cartItem = document.querySelector(
-    `#cart-items #${dessert.id} .quantity`
-  );
+  const cartItem = document.querySelector(`#cart-items #${dessert.id} .quantity`);
 
   if (cartItem) {
     cartItem.innerHTML = `${quantity}x`;
+    const totalPriceElement = document.querySelector(`#cart-items #${dessert.id} .total-price`);
+
+    if (totalPriceElement) {
+      totalPriceElement.innerHTML = `$${(dessert.price * quantity).toFixed(2)}`;
+    }
   } else {
     cartItemsHtmlContent.innerHTML += `
       <div id="${dessert.id}">
@@ -98,16 +98,18 @@ function addItemToCart(dessert) {
             <p>
               <span class="quantity">${quantity}x</span>
               <span class="unique-price">@ $${dessert.price.toFixed(2)}</span>
-              $<span class="total-price">${(dessert.price * quantity).toFixed(
-                2
-              )}</span>
+              <span class="total-price">$${(dessert.price * quantity).toFixed(2)}</span>
             </p>
           </div>
           <div class="remove-item-btn">x</div>
         </div>
       </div>
     `;
+    const removeBtn = document.querySelector(`#cart-items #${dessert.id} .remove-item-btn`);
+    removeBtn.addEventListener("click", () => deleteItem(dessert));
   }
+  calculateCartTotals();
+  cartVisibility();
 }
 
 function removeItemToCart(dessert) {
@@ -117,30 +119,56 @@ function removeItemToCart(dessert) {
   const quantity = cartQuantities[dessert.id];
 
   if (quantity === 0) {
-    delete cartQuantities[dessert.id];
+    //delete the item if no items in the array are left
     document.querySelector(`#cart-items #${dessert.id}`).remove();
-    hideBtnStyle(dessert.id);
+    hideBtnStyle(dessert.id); //go back to the previous button
+    
   } else {
-    document.querySelector(`#${dessert.id} .quantityBTN p`).innerHTML =
-      quantity;
-    document.querySelector(
-      `#cart-items #${dessert.id} .quantity`
-    ).innerHTML = `${quantity}x`;
+    //increase the quantity in the red quantity btn
+    document.querySelector(`#${dessert.id} .quantityBTN p`).innerHTML = quantity;
+    //increase the quantity in the item cart
+    document.querySelector(`#cart-items #${dessert.id} .quantity`).innerHTML = `${quantity}x`;
+  }
+  calculateCartTotals();
+  cartVisibility();
+}
+
+// Calculate totals
+function calculateCartTotals() {
+  let totalCost = 0;
+  let totalItems = 0;
+
+  addedCartItems.forEach((item) => {
+    const quantity = cartQuantities[item.id] || 0;
+    totalCost += item.price * quantity;
+    totalItems += quantity;
+  });
+
+  const prova = document.querySelector("#cart h2 span");
+  prova.textContent = totalItems;
+
+  const totalCostEl = document.querySelector("#order-total p span");
+  if (totalCostEl) {
+    totalCostEl.textContent = `$${totalCost.toFixed(2)}`;
   }
 }
 
-//DELETE BUTTON   -- NOT WORKING
-function deleteBTN(dessert) {
-  const prova = document.querySelectorAll(
-    `#cart-items #${dessert.id} .added-product .remove-item-btn`
-  );
+function deleteItem(dessert) {
+  // Remove item from cartQuantities
+  delete cartQuantities[dessert.id];
+  // Remove item from addedCartItems
+  document.querySelector(`#cart-items #${dessert.id}`)?.remove();
+  hideBtnStyle(dessert.id);
+  calculateCartTotals();
+}
 
-  prova.forEach((button, index) => {
-    button.addEventListener("click", function () {
-      const dessert = data[index];
-      delete cartQuantities[dessert.id];
-      document.querySelector(`#cart-items #${dessert.id}`).remove();
-      hideBtnStyle(dessert.id);
-    });
-  });
+
+function cartVisibility(){  //it's NOT Working
+if (addedCartItems.length === 0) {
+  document.getElementById("confirm-order").classList.add("display-none");
+  emptyCart.classList.remove("display-none");
+} else {
+  emptyCart.classList.add("display-none");
+  document.getElementById("confirm-order").classList.remove("display-none");
+}
 }
