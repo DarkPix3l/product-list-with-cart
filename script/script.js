@@ -3,7 +3,7 @@ const cartItemsHtmlContent = document.getElementById("cart-items");
 const add2cart = document.getElementsByClassName("add2Cart");
 const emptyCart = document.getElementById("empty-cart");
 
-const addedCartItems = []; //Storing cart products
+let addedCartItems = []; //Storing cart products
 const cartQuantities = {}; // Storing product quantities
 
 fetch("./script/data.json")
@@ -54,6 +54,8 @@ fetch("./script/data.json")
     document.querySelectorAll(".minusIcon").forEach((button, index) => {
       button.addEventListener("click", () => removeItemToCart(data[index]));
     });
+
+    
   })
   .catch((error) => console.error("Error:", error));
 
@@ -110,6 +112,7 @@ function addItemToCart(dessert) {
   }
   calculateCartTotals();
   cartVisibility();
+
 }
 
 function removeItemToCart(dessert) {
@@ -118,15 +121,20 @@ function removeItemToCart(dessert) {
   cartQuantities[dessert.id]--;
   const quantity = cartQuantities[dessert.id];
 
+  console.log("Removing item:", dessert.name, "Quantity left:", quantity);
+
   if (quantity === 0) {
-    //delete the item if no items in the array are left
+    //delete the item from the UI if no items in the array are left
     document.querySelector(`#cart-items #${dessert.id}`).remove();
     hideBtnStyle(dessert.id); //go back to the previous button
+
+    /* delete from state */
+    addedCartItems = addedCartItems.filter(item => item.id !== dessert.id);
+    delete cartQuantities[dessert.id];
     
   } else {
-    //increase the quantity in the red quantity btn
+     // Update the UI with new quantity
     document.querySelector(`#${dessert.id} .quantityBTN p`).innerHTML = quantity;
-    //increase the quantity in the item cart
     document.querySelector(`#cart-items #${dessert.id} .quantity`).innerHTML = `${quantity}x`;
   }
   calculateCartTotals();
@@ -142,11 +150,14 @@ function calculateCartTotals() {
     const quantity = cartQuantities[item.id] || 0;
     totalCost += item.price * quantity;
     totalItems += quantity;
+
   });
 
+  //updating total items UI
   const prova = document.querySelector("#cart h2 span");
   prova.textContent = totalItems;
 
+  //updating the sum of same tipe of items
   const totalCostEl = document.querySelector("#order-total p span");
   if (totalCostEl) {
     totalCostEl.textContent = `$${totalCost.toFixed(2)}`;
