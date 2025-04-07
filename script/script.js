@@ -64,11 +64,13 @@ fetch("./script/data.json")
 // Show quantity btn
 function showBtnStyle(id) {
   document.querySelector(`#${id} .quantityBTN`).style.display = "flex";
+  document.querySelector(`#${id} .actionContainer`).classList.add("selected");
 }
 
 // hide quantity btn
 function hideBtnStyle(id) {
   document.querySelector(`#${id} .quantityBTN`).style.display = "none";
+  document.querySelector(`#${id} .actionContainer`).classList.remove("selected");
 }
 
 // Function add item to cart

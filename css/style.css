@@ -275,6 +275,10 @@ aside {
   display: none;
 }
 
+.selected {
+  border: 1px solid var(--Red);
+}
+
 #order-total p {
   margin: 30px 0;
 }
