@@ -13,39 +13,43 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap"
     rel="stylesheet">
-
-  <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<!--   <link rel="stylesheet" href="./css/style.css"> -->
+  <link rel="stylesheet" href="./css/input.css">
 
 </head>
 
 <body>
-
+          <!-- DO NOT TOUCH THE IDs!!!!!!! -->
   <div class="wrapper">
-    <main>
+
+    <main class="min-h-[100vh] flex gap-7">
       <div id="grow">
-        <h1>Desserts</h1>
-        <section id="container">
+        <h1 class="mb-7 text-4xl font-bold text-[var(--Rose-900)]">Desserts</h1>
+        <section id="container" class=" grid grid-cols-3 justify-center gap-5">
         </section>
       </div>
-      <aside>
-        <div id="cart">
-          <h2> Your Cart (<span>0</span>)</h2>
+
+      <aside class="min-h[100vh] min-w-[390px]">
+
+        <div id="cart" class="p-8 bg-white rounded-xl">
+          <h2 class="text-[var(--Red)] mb-3 font-bold text-2xl"> Your Cart (<span>0</span>)</h2>
 
           <div id="empty-cart">
-            <img src="./assets/images/illustration-empty-cart.svg" alt="empty cart image">
-            <p> Your added items will appear here</p>
+            <img class="block m-auto" src="./assets/images/illustration-empty-cart.svg" alt="empty cart image">
+            <p class="text-center"> Your added items will appear here</p>
           </div>
 
-          <div id="cart-items" class="cart-items">
+          <div id="cart-items" class="cart-items flex flex-col gap-4">
           </div>
 
           <div id="confirm-order" class="display-none">
             <div id="order-total">
-              <p>Order total<span>$00.00</span></p>
+              <p class="my-8">Order total<span class="float-end font-bold text-2xl text-[var(--Rose-900)]">$00.00</span></p>
             </div>
-            <div id="emission-info">
-              <img src="./assets/images/icon-carbon-neutral.svg" alt="carbon-neutral logo">
-              <p>This is a <b>carbon-neutral</b> delivery</p>
+            <div id="emission-info" class="bg-[var(--Rose-100)] flex justify-center p-5 rounded-xl">
+              <img class="mr-3" src="./assets/images/icon-carbon-neutral.svg" alt="carbon-neutral logo">
+              <p>This is a <b class="text-[var(--Rose-500)]">carbon-neutral</b> delivery</p>
             </div>
             <button>Confirm Order</button>
           </div>

@@ -12,26 +12,26 @@ fetch("./script/data.json")
     // adding products dynamically
     data.forEach((dessert) => {
       container.innerHTML += `
-        <div class="product-list-item" id="${dessert.id}">
-          <div class="actionContainer">
-              <img src="${dessert.image.desktop}">
+        <div class="product-list-item w-full h-full" id="${dessert.id}">
+          <div class="actionContainer relative">
+              <img class="w-full aspect-square rounded-md" src="${dessert.image.desktop}">
               
-              <div class="add2Cart">
-                  <img src="./assets/images/icon-add-to-cart.svg" alt="icon-add-to-cart">
-                  <p>Add to Cart</p>
+              <div class="add2Cart bg-white justify-center">
+                  <img class="w-6" src="./assets/images/icon-add-to-cart.svg" alt="icon-add-to-cart">
+                  <p class="ml-1 font-medium">Add to Cart</p>
               </div>
 
-              <div class="quantityBTN" style="display: none;">
+              <div class="quantityBTN justify-around bg-primary text-white hidden" style="display: none;">
                   <div class="minusIcon"><span>-</span></div>
                   <p>1</p>
-                  <div class="plusIcon"><span>+</span></div>
+                  <div class="plusIcon pt-[2px]"><span>+</span></div>
               </div>
           </div>
           
-          <div class="description">
-              <p class="category">${dessert.category}</p>
-              <p class="name">${dessert.name}</p>
-              <p class="price">$${dessert.price.toFixed(2)}</p>
+          <div class="description mt-9">
+              <p class="category text-gray-700">${dessert.category}</p>
+              <p class="name font-semibold">${dessert.name}</p>
+              <p class="price text-[var(--Red)] font-semibold">$${dessert.price.toFixed(2)}</p>
           </div>
       </div>
       `;
@@ -94,13 +94,13 @@ function addItemToCart(dessert) {
   } else {
     cartItemsHtmlContent.innerHTML += `
       <div id="${dessert.id}">
-        <div class="added-product">
+        <div class="added-product flex items-center justify-between py-3 border-b border-solid border-gray-300">
           <div class="text">
-            <p>${dessert.name}</p>
+            <p class="font-semibold mb-3">${dessert.name}</p>
             <p>
-              <span class="quantity">${quantity}x</span>
-              <span class="unique-price">@ $${dessert.price.toFixed(2)}</span>
-              <span class="total-price">$${(dessert.price * quantity).toFixed(2)}</span>
+              <span class="quantity mr-7 text-[var(--Red)] font-semibold">${quantity}x</span>
+              <span class="unique-price mr-2 text-rose2-400">@ $${dessert.price.toFixed(2)}</span>
+              <span class="total-price text-rose2-500 font-semibold">$${(dessert.price * quantity).toFixed(2)}</span>
             </p>
           </div>
           <div class="remove-item-btn">x</div>
