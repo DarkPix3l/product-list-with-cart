@@ -277,6 +277,7 @@ aside {
 
 .selected {
   border: 1px solid var(--Red);
+  border-radius: 5px;
 }
 
 #order-total p {
